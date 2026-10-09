@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>도도베베토토의 플레이그라운드</title>
+<meta name="description" content="KBO 응원가 플레이어와 웹 게임보이 에뮬레이터 — 직접 만든 것들을 모아둔 놀이터">
+<meta property="og:title" content="도도베베토토의 플레이그라운드">
+<meta property="og:description" content="KBO 응원가 플레이어와 웹 게임보이 에뮬레이터 — 직접 만든 것들을 모아둔 놀이터">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'Gowun Dodum', sans-serif;
+    background:#fdf6e3;
+    background-image:radial-gradient(#e8dcc0 1.2px, transparent 1.2px);
+    background-size:22px 22px;
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center;
+    padding:40px 16px 32px;
+    color:#333;
+    overflow-x:hidden;
+  }
+  /* 헤더 스티커 */
+  .header-sticker {
+    position:relative;
+    background:#fff;
+    border:3px solid #222;
+    border-radius:20px;
+    padding:18px 42px;
+    transform:rotate(-2deg);
+    box-shadow:5px 5px 0 rgba(0,0,0,.15);
+    text-align:center;
+    margin-bottom:44px;
+    z-index:2;
+  }
+  .header-sticker h1 {
+    font-family:'Gaegu', cursive;
+    font-size:2rem;
+    letter-spacing:1px;
+  }
+  .header-sticker p { font-size:.95rem; color:#777; margin-top:4px; }
+  .tape {
+    position:absolute; top:-15px; left:50%;
+    width:110px; height:28px;
+    transform:translateX(-50%) rotate(3deg);
+    background:repeating-linear-gradient(45deg, rgba(255,170,200,.75) 0 8px, rgba(255,200,220,.75) 8px 16px);
+    border-left:2px dashed rgba(255,255,255,.8);
+    border-right:2px dashed rgba(255,255,255,.8);
+    opacity:.9;
+  }
+  /* 반반 분할 */
+  .halves {
+    display:flex; gap:36px;
+    width:100%; max-width:960px;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+  .half {
+    position:relative;
+    flex:1 1 320px; max-width:440px;
+    background:#fff;
+    border:3px solid #222;
+    border-radius:22px;
+    padding:64px 28px 32px;
+    box-shadow:6px 6px 0 rgba(0,0,0,.15);
+    text-align:center;
+  }
+  .half.left { transform:rotate(-1.5deg); }
+  .half.right { transform:rotate(1.5deg); }
+  .half .tape-a {
+    position:absolute; top:-15px; left:50%;
+    width:100px; height:28px;
+    transform:translateX(-50%) rotate(-5deg);
+    border-left:2px dashed rgba(255,255,255,.8);
+    border-right:2px dashed rgba(255,255,255,.8);
+  }
+  .half.left .tape-a { background:repeating-linear-gradient(45deg, rgba(120,170,255,.8) 0 8px, rgba(170,205,255,.8) 8px 16px); }
+  .half.right .tape-a { background:repeating-linear-gradient(45deg, rgba(190,150,255,.8) 0 8px, rgba(215,190,255,.8) 8px 16px); }
+  .icon-wrap {
+    width:110px; height:110px;
+    margin:0 auto 18px;
+    background:#fff;
+    border:3px solid #222;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:3px 3px 0 rgba(0,0,0,.12);
+  }
+  .half h2 { font-family:'Gaegu', cursive; font-size:1.7rem; margin-bottom:10px; }
+  .half.left h2 { color:#0b4fc4; }
+  .half.right h2 { color:#7c3aed; }
+  .half p.desc { font-size:1rem; line-height:1.7; color:#555; margin-bottom:8px; }
+  .half p.tags { font-size:.85rem; color:#999; margin-bottom:22px; }
+  .btn {
+    display:inline-block;
+    font-family:'Gaegu', cursive; font-size:1.25rem;
+    color:#222; text-decoration:none;
+    background:#ffe14d;
+    border:3px solid #222; border-radius:999px;
+    padding:10px 34px;
+    box-shadow:4px 4px 0 rgba(0,0,0,.18);
+    transform:rotate(-1deg);
+    transition:transform .15s;
+  }
+  .btn:hover { transform:rotate(1deg) scale(1.05); }
+  .half.right .btn { background:#c4f15a; }
+  /* 둥둥 떠다니는 장식 스티커 */
+  .deco {
+    position:fixed; z-index:1;
+    font-family:'Gaegu', cursive;
+    color:#f5a623;
+    user-select:none; pointer-events:none;
+    animation:float 5s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0) rotate(-8deg);} 50%{transform:translateY(-14px) rotate(8deg);} }
+  footer {
+    margin-top:48px; font-size:.85rem; color:#aaa;
+    background:#fff; border:2px solid #222; border-radius:999px;
+    padding:8px 22px; transform:rotate(1deg);
+    box-shadow:3px 3px 0 rgba(0,0,0,.1);
+  }
+  @media (max-width:720px) {
+    .halves { gap:44px; }
+    .header-sticker h1 { font-size:1.5rem; }
+  }
+</style>
+</head>
+<body>
+  <span class="deco" style="top:8%; left:6%; font-size:2rem;">✦</span>
+  <span class="deco" style="top:14%; right:8%; font-size:1.6rem; color:#f78fb3; animation-delay:1.2s;">✦</span>
+  <span class="deco" style="bottom:12%; left:10%; font-size:1.4rem; color:#7cc7ff; animation-delay:2s;">✦</span>
+  <span class="deco" style="bottom:20%; right:6%; font-size:2.2rem; color:#c4f15a; animation-delay:.6s;">✦</span>
+
+  <div class="header-sticker">
+    <div class="tape"></div>
+    <h1>도도베베토토의 플레이그라운드</h1>
+    <p>직접 만든 것들을 모아둔 다꾸 놀이터</p>
+  </div>
+
+  <div class="halves">
+    <section class="half left">
+      <div class="tape-a"></div>
+      <div class="icon-wrap">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="26" fill="#fff" stroke="#222" stroke-width="3"/>
+          <path d="M18 12 Q26 32 18 52" fill="none" stroke="#e04848" stroke-width="3" stroke-dasharray="5 4"/>
+          <path d="M46 12 Q38 32 46 52" fill="none" stroke="#e04848" stroke-width="3" stroke-dasharray="5 4"/>
+        </svg>
+      </div>
+      <h2>KBO 응원가 플레이어</h2>
+      <p class="desc">10개 구단 응원가를 한곳에서!<br>라인업 모드 · 드림/나눔 올스타 모드 지원</p>
+      <p class="tags">#야구 #응원가 #KBO</p>
+      <a class="btn" href="https://dodobebetoto123-d.github.io/kbo-cheer-songs/">응원하러 가기</a>
+    </section>
+
+    <section class="half right">
+      <div class="tape-a"></div>
+      <div class="icon-wrap">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <rect x="14" y="8" width="36" height="48" rx="6" fill="#7c3aed" stroke="#222" stroke-width="3"/>
+          <rect x="20" y="14" width="24" height="18" fill="#9bbc0f" stroke="#222" stroke-width="2"/>
+          <rect x="24" y="38" width="6" height="14" fill="#222"/>
+          <rect x="20" y="42" width="14" height="6" fill="#222"/>
+          <circle cx="44" cy="42" r="3.5" fill="#e04848" stroke="#222" stroke-width="1.5"/>
+          <circle cx="44" cy="50" r="3.5" fill="#e04848" stroke="#222" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <h2>GB-EMU</h2>
+      <p class="desc">웹에서 바로 도는<br>게임보이 / 게임보이컬러 에뮬레이터</p>
+      <p class="tags">#레트로게임 #에뮬레이터 #웹</p>
+      <a class="btn" href="https://dodobebetoto123-d.github.io/gb-emu/">게임하러 가기</a>
+    </section>
+  </div>
+
+  <footer>made by dodobebetoto123-D · 2026</footer>
+</body>
+</html>
